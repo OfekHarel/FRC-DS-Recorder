@@ -39,6 +39,6 @@ class PeriodicRecorder:
 
 
 if __name__ == '__main__':
-    pr = PeriodicRecorder("/SmartDashboard/DS_recording/isStarted", fps=15, output=os.path.join(os.environ['USERPROFILE'], r'Videos\Captures'), simulation=False)
+    pr = PeriodicRecorder("/SmartDashboard/DS_recording/isStarted", fps=15, output=os.path.join(os.environ['USERPROFILE'], r'Videos\Captures'), simulation=True)
     pr.start()
             
