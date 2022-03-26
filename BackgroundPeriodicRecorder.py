@@ -11,6 +11,7 @@ class PeriodicRecorder:
         print("waiting for connections...")
         ip = '10.33.39.2' if not simulation else 'localhost'
         if simulation:
+            self.enable_entry_path = "/recorder/start"
             NetworkTables.startClient(ip)
         nt_init(ip)
     
@@ -27,6 +28,6 @@ class PeriodicRecorder:
                 self.stop()
 
 if __name__ == '__main__':
-    pr = PeriodicRecorder("/recorder/start", fps=10, output='', simulation=True)
+    pr = PeriodicRecorder("/Smartdashboard/DS_recording/isStart", fps=15, output=f'C:\Users\Laptop7\Videos\Captures', simulation=False)
     pr.start()
             
