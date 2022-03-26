@@ -2,13 +2,14 @@ from networktables import NetworkTables
 from MatchRecorder import MatchRecorder
 from NT_helper import nt_init
 import os
-
+import time
 
 class PeriodicRecorder:
 
     def __init__(self, enable_entry_path, fps=15, output='', simulation=False):
         self.enable_entry_path = enable_entry_path
         self.recorder = MatchRecorder(fps, output)
+        self.FPS = fps
         self.started = False
 
         print("waiting for connections...")
@@ -20,13 +21,17 @@ class PeriodicRecorder:
 
     
     def is_recording(self):
-        return NetworkTables.getEntry(self.enable_entry_path).getBoolean(False)
+        if NetworkTables.isConnected():
+            val = NetworkTables.getEntry(self.enable_entry_path).getBoolean(False)
+        else:
+            val = False
+        return val
 
     def start(self):
         while True:
             if self.is_recording():
-                self.started = True
                 self.recorder.next_frame()
+                self.started = True
 
             elif self.started:
                 self.started = False
