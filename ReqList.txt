@@ -1,0 +1,6 @@
+pip install opencv-python
+pip install pynetworktables
+pip install pillow
+pip install pyautogui
+pip install pygame
+pip install numpy
