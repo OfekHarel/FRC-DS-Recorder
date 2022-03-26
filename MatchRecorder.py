@@ -1,4 +1,4 @@
-from math import ceil
+from math import ceil, floor
 import cv2
 from networktables import NetworkTables
 import numpy as np
@@ -16,8 +16,10 @@ class MatchRecorder:
         self.vid_out = None
         self.was_init = False
         self.init_time = None
-        self.fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        self.fourcc = cv2.VideoWriter_fourcc(*'MJPG')
         self.table = NetworkTables.getTable('FMSInfo')
+
+        os.system("cls")
 
 
     def _get_match_discription(self):
@@ -29,27 +31,28 @@ class MatchRecorder:
 
 
     def _get_vid_out(self):
-        return cv2.VideoWriter(f"{os.path.join(self.OUT_PATH, self._get_match_discription())}.mp4", self.fourcc, self.FPS, (self.SCREEN_SIZE))
+        return cv2.VideoWriter(f"{os.path.join(self.OUT_PATH, self._get_match_discription())}.avi", self.fourcc, self.FPS, (self.SCREEN_SIZE))
 
 
     def get_match_time(self) -> str:
         if self.was_init:
-            return str(int(time.time() - self.init_time))
+            return str(int(floor(time.time() - self.init_time)))
         else:
             return str(0)
 
+
     def next_frame(self):
-        img = pyautogui.screenshot()
-        frame = np.array(img)
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame = cv2.putText(frame, self.get_match_time().zfill(3), (self.SCREEN_SIZE[0] - 200, self.SCREEN_SIZE[1] - 50), cv2.FONT_HERSHEY_SIMPLEX, 3, (255, 255, 255), 4)
 
         if not self.was_init:
-            print("starting...")
+            print(f"starting... {self._get_match_discription()}")
             self.vid_out = self._get_vid_out()
             self.was_init = True
             self.init_time = time.time()
 
+        img = pyautogui.screenshot()
+        frame = np.array(img)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = cv2.putText(frame, self.get_match_time().zfill(3), (self.SCREEN_SIZE[0] - 170, self.SCREEN_SIZE[1] - 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 4)
         self.vid_out.write(frame)
     
     def stop(self):
