@@ -37,4 +37,5 @@ class MatchRecorder:
             frame = np.array(img)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             self.vid_out.write(frame)
+        self.vid_out.release()
         print("closing...")
