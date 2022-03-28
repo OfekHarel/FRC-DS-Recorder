@@ -13,11 +13,13 @@ class PeriodicRecorder:
         self.started = False
 
         print("waiting for connections...")
-        ip = '10.33.39.2' if not simulation else 'localhost'
         if simulation:
+            ip = 'localhost'
             self.enable_entry_path = "/recorder/start"
             NetworkTables.startClient(ip)
-        nt_init(ip)
+            ip = nt_init(ip)
+        else:
+            ip = nt_init('10.33.39.2', '169.254.117.18')
 
     
     def is_recording(self):
@@ -39,6 +41,6 @@ class PeriodicRecorder:
 
 
 if __name__ == '__main__':
-    pr = PeriodicRecorder("/SmartDashboard/DS_recording/isStarted", fps=15, output=os.path.join(os.environ['USERPROFILE'], r'Videos\Captures'), simulation=True)
+    pr = PeriodicRecorder("/SmartDashboard/DS_recording/isStarted", fps=15, output=os.path.join(os.environ['USERPROFILE'], r'Videos\Captures'), simulation=False)
     pr.start()
             
