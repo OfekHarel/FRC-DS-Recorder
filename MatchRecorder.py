@@ -18,7 +18,7 @@ class MatchRecorder:
         self.init_time = None
         self.fourcc = cv2.VideoWriter_fourcc(*'MJPG')
         self.table = NetworkTables.getTable('FMSInfo')
-
+        
         os.system("cls")
 
 
